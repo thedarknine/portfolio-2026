@@ -1,6 +1,6 @@
 services:
   app:
-    container_name: ptfl-app
+    container_name: portfolio-app
     build: 
       context: .docker
       dockerfile: php.dockerfile
@@ -10,12 +10,12 @@ services:
     volumes:
       - ./:/var/www/html
     networks:
-      - ptfl-ntwk
+      - portfolio-ntwk
     depends_on:
       - db
 
   db:
-    container_name: ptfl-db
+    container_name: portfolio-db
     image: mysql:8.0
     environment:
       - MYSQL_ROOT_PASSWORD=admin
@@ -25,14 +25,14 @@ services:
     ports:
       - "3306:3306"
     networks:
-      - ptfl-ntwk
+      - portfolio-ntwk
     volumes:
       - db-data:/var/lib/mysql
       - ./.docker/volumes/logs/mysql:/var/log/mysql
       - ./.docker/mysql/ql:/docker-entrypoint-initdb.d
   
   engine:
-    container_name: ptfl-server
+    container_name: portfolio-server
     image: nginx:alpine
     restart: unless-stopped
     ports:
@@ -43,11 +43,11 @@ services:
     links:
       - app
     networks:
-      - ptfl-ntwk
+      - portfolio-ntwk
   
   phpmyadmin:
     image: arm64v8/phpmyadmin:latest
-    container_name: ptfl-pma
+    container_name: portfolio-pma
     ports:
         - 8088:80
     depends_on:
@@ -60,10 +60,10 @@ services:
         PMA_PORT: 3306
         PMA_ARBITRARY: 1
     networks:
-      - ptfl-ntwk
+      - portfolio-ntwk
 
 networks:
-  ptfl-ntwk:
+  portfolio-ntwk:
     driver: bridge
 
 volumes:

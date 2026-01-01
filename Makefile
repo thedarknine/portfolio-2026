@@ -61,6 +61,7 @@ start:
 stop:
 	docker compose stop
 
+## Run shell into docker app
 shell:
 	docker compose exec app bash
 
